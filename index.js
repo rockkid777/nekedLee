@@ -65,10 +65,8 @@ function requestImg(data) {
 
 function loadData(data) {
 	var promise = new Promise(function(resolve, reject) {
-		debugger;
 		readFs('./var/data.json', 'utf8')
 		.then(function(val) {
-			debugger;
 			console.log(val);
 			var obj = JSON.parse(val);
 			if (obj.hasOwnProperty('oldImgName')) {

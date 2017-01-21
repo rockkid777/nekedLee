@@ -1,0 +1,33 @@
+{
+  "name": "nekedlee",
+  "version": "1.0.0",
+  "description": "Nokedli slack webhook app.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rockkid777/nekedLee.git"
+  },
+  "keywords": [
+    "slack",
+    "food",
+    "webhook",
+    "fun"
+  ],
+  "author": "Ádám, Révész",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rockkid777/nekedLee/issues"
+  },
+  "homepage": "https://github.com/rockkid777/nekedLee#readme",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "promise": "^7.1.1",
+    "promise-denodeify": "^1.2.2",
+    "request": "^2.79.0",
+    "slack-node": "^0.1.8"
+  }
+}

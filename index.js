@@ -1,9 +1,9 @@
 var request = require('request')
-,	Promise = require('promise')
+,   Promise = require('promise')
 ,   fs      = require('fs')
 ,   Slack   = require('slack-node')
 ,   cheerio = require('cheerio')
-,	config  = require('./var/config.js');
+,   config  = require('./var/config.js');
 
 var data = {
 	imgBaseUrl: 'http://nokedlikifozde.hu/wp-content/uploads/',

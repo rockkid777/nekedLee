@@ -26,6 +26,7 @@ function sendAndPersist(data) {
 		if (data.imgName === data.oldImgName) {
 			console.log('No new post');
 			resolve(data);
+			return;
 		}
 
 		data.message.attachments.push({

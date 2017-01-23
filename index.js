@@ -35,16 +35,25 @@ function sendAndPersist(data) {
 
 
 		var slack = new Slack();
-		var sendWebhook = Promise.denodeify(slack.webhook);
 	    slack.setWebhook(data.webhookUri);
 
-		sendWebhook(data.message).then(function(val) {
-			writeFs(
-				'./var/data.json',
-				JSON.stringify({oldImgName : data.imgName})
-			).then(function() { console.log('Saved.'); resolve(data); })
-			.catch(function(err) { console.error(err); reject(data); });
-		}).catch(function(err) {console.log(err);});
+		slack.webhook(data.message, function(error, response) {
+			if (!error) {
+				writeFs(
+					'./var/data.json',
+					JSON.stringify({oldImgName : data.imgName})
+				).then(function(val) {
+					console.log('Saved.');
+					resolve(data);
+				})
+				.catch(function(err) {
+					console.error('writeFs: ' + err);
+					reject(data);
+				});
+			} else {
+				console.error(error);
+			}
+		});
 	});
 	return promise;
 }

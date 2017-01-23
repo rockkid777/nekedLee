@@ -33,9 +33,10 @@ function sendAndPersist(data) {
 			image_url: (data.imgBaseUrl + data.imgName)
 		});
 
+
 		var slack = new Slack();
 		var sendWebhook = Promise.denodeify(slack.webhook);
-	    slack.setWebhook(webhookUri);
+	    slack.setWebhook(data.webhookUri);
 
 		sendWebhook(data.message).then(function(val) {
 			writeFs(
@@ -43,7 +44,7 @@ function sendAndPersist(data) {
 				JSON.stringify({oldImgName : data.imgName})
 			).then(function() { console.log('Saved.'); resolve(data); })
 			.catch(function(err) { console.error(err); reject(data); });
-		});
+		}).catch(function(err) {console.log(err);});
 	});
 	return promise;
 }

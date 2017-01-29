@@ -4,12 +4,12 @@ var request = require('request')
 
 
 function Nokedli() {
-    imgBaseUrl = 'http://nokedlikifozde.hu/wp-content/uploads/',
-    url = 'http://nokedlikifozde.hu/wp-content/uploads/?C=M;O=D;F=1',
+    this.imgBaseUrl = 'http://nokedlikifozde.hu/wp-content/uploads/',
+    this.url = 'http://nokedlikifozde.hu/wp-content/uploads/?C=M;O=D;F=1',
 
     this.updateNokedli = function(data) {
         var promise = new Promise(function(resolve, reject) {
-    		request(url, function(err, response, body) {
+    		request(this.url, function(err, response, body) {
     			if (err) {
     				console.error(err);
     				reject(data);
@@ -25,15 +25,15 @@ function Nokedli() {
                     data.store.nokedli.lastImg = imgName;
                     data.message.attachments.push({
                         text: 'A Nokedli új képet rakott ki! :wink:',
-            			image_url: (imgBaseUrl + imgName)
+            			image_url: (this.imgBaseUrl + imgName)
                     });
                 }
     			resolve(data);
-    		});
-    	});
+    		}.bind(this));
+    	}.bind(this));
     	return promise;
-    };
+    }.bind(this);
     return {updateNokedli: this.updateNokedli};
 };
 
-module.exports = new Nokedli();
+module.exports = Nokedli;

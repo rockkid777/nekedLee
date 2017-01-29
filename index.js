@@ -4,7 +4,8 @@ var request = require('request')
 ,   Slack   = require('slack-node')
 ,   cheerio = require('cheerio')
 ,   config  = require('./var/config.js')
-,	nokedli = require('./modules/nokedli.js');
+,	Nokedli = require('./modules/nokedli.js')
+,	Ferdinand = require('./modules/ferdinand.js');
 
 var data = {
 	imgBaseUrl: 'http://nokedlikifozde.hu/wp-content/uploads/',
@@ -72,11 +73,9 @@ function loadData(data) {
 	var promise = new Promise(function(resolve, reject) {
 		readFs('./var/data.json', 'utf8')
 		.then(function(val) {
-			console.log(val);
 			var obj = JSON.parse(val);
 
 			data.store = obj.store || {};
-			console.log(data);
 			resolve(data);
 		})
 		.catch(function(err) {
@@ -87,4 +86,10 @@ function loadData(data) {
 	return promise;
 }
 
-loadData(data).then(nokedli.updateNokedli).then(sendAndPersist);
+var nokedli = new Nokedli();
+var ferdinand = new Ferdinand();
+
+loadData(data)
+	.then(nokedli.updateNokedli)
+	.then(ferdinand.updateFerdinand)
+	.then(sendAndPersist);

@@ -3,7 +3,8 @@ var request = require('request')
 ,   fs      = require('fs')
 ,   Slack   = require('slack-node')
 ,   cheerio = require('cheerio')
-,   config  = require('./var/config.js');
+,   config  = require('./var/config.js')
+,	nokedli = require('./modules/nokedli.js');
 
 var data = {
 	imgBaseUrl: 'http://nokedlikifozde.hu/wp-content/uploads/',
@@ -14,8 +15,7 @@ var data = {
 	    attachments: []
 	},
 	webhookUri: config.webhookUri,
-	oldImgName: '',
-	imgName: ''
+	store: {}
 };
 
 var readFs = Promise.denodeify(fs.readFile);
@@ -23,17 +23,11 @@ var writeFs = Promise.denodeify(fs.writeFile);
 
 function sendAndPersist(data) {
 	var promise = new Promise(function(resolve, reject) {
-		if (data.imgName === data.oldImgName) {
+		if (data.message.attachments.length < 1) {
 			console.log('No new post');
 			resolve(data);
 			return;
 		}
-
-		data.message.attachments.push({
-			text: 'A Nokedli új képet rakott ki! :wink:',
-			image_url: (data.imgBaseUrl + data.imgName)
-		});
-
 
 		var slack = new Slack();
 	    slack.setWebhook(data.webhookUri);
@@ -42,7 +36,7 @@ function sendAndPersist(data) {
 			if (!error) {
 				writeFs(
 					'./var/data.json',
-					JSON.stringify({oldImgName : data.imgName})
+					JSON.stringify({store : data.store})
 				).then(function(val) {
 					console.log('Saved.');
 					resolve(data);
@@ -80,13 +74,10 @@ function loadData(data) {
 		.then(function(val) {
 			console.log(val);
 			var obj = JSON.parse(val);
-			if (obj.hasOwnProperty('oldImgName')) {
-				data.oldImgName = obj.oldImgName;
-				resolve(data);
-			} else {
-				console.error('Invalid data file.');
-				resolve(data);
-			}
+
+			data.store = obj.store || {};
+			console.log(data);
+			resolve(data);
 		})
 		.catch(function(err) {
 			console.error(err);
@@ -96,4 +87,4 @@ function loadData(data) {
 	return promise;
 }
 
-loadData(data).then(requestImg).then(sendAndPersist);
+loadData(data).then(nokedli.updateNokedli).then(sendAndPersist);

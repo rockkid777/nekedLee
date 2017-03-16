@@ -40,3 +40,4 @@ var/
 
 # IDEA ide stuff
 .idea/
+*.iml

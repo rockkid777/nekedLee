@@ -36,7 +36,7 @@ function Ferdinand() {
     	}.bind(this));
     	return promise;
     }.bind(this);
-    return {updateFerdinand: this.updateFerdinand};
+    return {update: this.update};
 };
 
 module.exports = Ferdinand;

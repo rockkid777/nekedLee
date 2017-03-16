@@ -73,6 +73,6 @@ var nokedli = new Nokedli();
 var ferdinand = new Ferdinand();
 
 loadData(data)
-	.then(nokedli.updateNokedli)
-	.then(ferdinand.updateFerdinand)
+	.then(nokedli.update)
+	.then(ferdinand.update)
 	.then(sendAndPersist);

@@ -7,7 +7,7 @@ function Nokedli() {
     this.imgBaseUrl = 'http://nokedlikifozde.hu/wp-content/uploads/',
     this.url = 'http://nokedlikifozde.hu/wp-content/uploads/?C=M;O=D;F=1',
 
-    this.updateNokedli = function(data) {
+    this.update = function(data) {
         var promise = new Promise(function(resolve, reject) {
     		request(this.url, function(err, response, body) {
     			if (err) {

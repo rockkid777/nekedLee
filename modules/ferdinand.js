@@ -6,7 +6,7 @@ var request = require('request')
 function Ferdinand() {
     this.url = 'http://ferdinandsorhaz.hu/',
 
-    this.updateFerdinand = function(data) {
+    this.update = function(data) {
         var promise = new Promise(function(resolve, reject) {
     		request(this.url, function(err, response, body) {
     			if (err) {

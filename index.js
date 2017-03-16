@@ -3,7 +3,7 @@ var request = require('request')
 ,   fs      = require('fs')
 ,   Slack   = require('slack-node')
 ,   cheerio = require('cheerio')
-,   config  = require('./var/config.js')
+,   config  = require('./etc/config.js')
 ,	Nokedli = require('./modules/nokedli.js')
 ,	Ferdinand = require('./modules/ferdinand.js');
 

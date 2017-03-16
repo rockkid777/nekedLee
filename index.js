@@ -8,8 +8,6 @@ var request = require('request')
 ,	Ferdinand = require('./modules/ferdinand.js');
 
 var data = {
-	imgBaseUrl: 'http://nokedlikifozde.hu/wp-content/uploads/',
-	url: 'http://nokedlikifozde.hu/wp-content/uploads/?C=M;O=D;F=1',
 	message: {
 		username: 'Neked Lee',
 		icon_emoji: ':ramen:',
@@ -49,21 +47,6 @@ function sendAndPersist(data) {
 			} else {
 				console.error(error);
 			}
-		});
-	});
-	return promise;
-}
-
-function requestImg(data) {
-	var promise = new Promise(function(resolve, reject) {
-		request(data.url, function(err, response, body) {
-			if (err) {
-				console.error(err);
-				reject(data);
-			}
-			$ = cheerio.load(body);
-			data.imgName = $('a')[5].attribs.href;
-			resolve(data);
 		});
 	});
 	return promise;

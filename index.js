@@ -1,5 +1,5 @@
 var request = require('request')
-,   Promise = require('promise')
+,   Promise = require('bluebird')
 ,   fs      = require('fs')
 ,   Slack   = require('slack-node')
 ,   cheerio = require('cheerio')

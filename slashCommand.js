@@ -3,6 +3,7 @@ const http = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+const config  = require('./etc/config.js')
 
 var redis = require('redis');
 Promise.promisifyAll(redis.RedisClient.prototype);
@@ -19,6 +20,6 @@ var allowCrossDomain = function(req, res, next) {
 app.use(allowCrossDomain);
 app.use(bodyParser.urlencoded({extended: false}));
 
-require('./controllers/slash.js')(app, client);
+require('./controllers/slash.js')(app, config, client);
 var server = http.createServer(app);
 server.listen(8080);

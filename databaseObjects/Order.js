@@ -2,7 +2,7 @@ const Promise = require('bluebird');
 const EXPIRE = 43200 // 12 hours
 
 function mkOrdId(id) {return ('order:' + id);}
-function mkObjId(id) {return ('order:' + id + 'data');}
+function mkObjId(id) {return ('order:' + id + ':data');}
 
 function getOrder(client, id) {
     const ordId = mkOrdId(id);
@@ -17,7 +17,7 @@ function createOrder(client, id) {
         client.getAsync(ordId)
         .then(function(isOpen) {
             if (isOpen) {
-                reject("ALREADY_SET");
+                reject('ALREADY_SET');
                 return;
             }
             client.setAsync(ordId, 1)
@@ -35,7 +35,7 @@ function addItemToOrder(client, id, user, item) {
         client.getAsync(ordId)
         .then(function(isOpen) {
             if (!isOpen || isOpen != 1) {
-                reject("CLOSED_OR_NULL");
+                reject('CLOSED_OR_NULL');
                 return;
             }
             client.hsetAsync(objId, user, item)
@@ -54,11 +54,17 @@ function removeItemFromOrder(client, id, user, item) {
         client.getAsync(ordId)
         .then(function(isOpen) {
             if (!isOpen || isOpen != 1) {
-                reject("CLOSED_OR_NULL");
+                reject('CLOSED_OR_NULL');
                 return;
             }
             client.hdelAsync(objId, user)
-            .then(() => resolve());
+            .then((result) => {
+                if (result == 1) {
+                    resolve();
+                } else {
+                    reject('INVALID_ITEM');
+                }
+            });
         });
     });
     return promise;
@@ -70,11 +76,12 @@ function closeOrder(client, id) {
         client.getAsync(ordId)
         .then(function(isOpen) {
             if (!isOpen || isOpen != 1) {
-                reject("CLOSED_OR_NULL");
+                reject('CLOSED_OR_NULL');
                 return;
             }
             client.setAsync(ordId, 0)
-            .then(() => resolve());
+            .then(() => resolve())
+            .catch(reject);
         });
     });
     return promise;
@@ -86,7 +93,7 @@ function isOpen(client, id) {
         client.getAsync(ordId)
         .then(function(isOpen) {
             if (!isOpen) {
-                reject("NULL");
+                reject('NULL');
                 return;
             }
             client.setAsync(ordId, 0)

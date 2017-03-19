@@ -17,8 +17,8 @@ var data = {
 	store: {}
 };
 
-var readFs = Promise.denodeify(fs.readFile);
-var writeFs = Promise.denodeify(fs.writeFile);
+var readFs = Promise.promisify(fs.readFile);
+var writeFs = Promise.promisify(fs.writeFile);
 
 function sendAndPersist(data) {
 	var promise = new Promise(function(resolve, reject) {

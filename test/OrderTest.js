@@ -70,4 +70,14 @@ describe('Order', function() {
         .should.be.eventually.be.false);
     });
 
+    it('Removing existing item from order should pass', function() {
+        return dbo.removeItemFromOrder('test1', 'Elek')
+        should.be.eventually.fulfilled;
+    });
+
+    it('Removing nonexisting item from order should fail', function() {
+        return dbo.removeItemFromOrder('test1', 'adam')
+        should.be.eventually.rejected;
+    });
+
 });

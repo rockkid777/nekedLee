@@ -1,6 +1,6 @@
 var request = require('request')
 ,   cheerio = require('cheerio')
-,   Promise = require('promise')
+,   Promise = require('bluebird')
 
 
 function Ferdinand() {

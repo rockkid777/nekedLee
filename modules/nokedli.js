@@ -1,6 +1,6 @@
 var request = require('request')
 ,   cheerio = require('cheerio')
-,   Promise = require('promise')
+,   Promise = require('bluebird')
 
 
 function Nokedli() {
@@ -33,7 +33,7 @@ function Nokedli() {
     	}.bind(this));
     	return promise;
     }.bind(this);
-    return {updateNokedli: this.updateNokedli};
+    return {update: this.update};
 };
 
 module.exports = Nokedli;

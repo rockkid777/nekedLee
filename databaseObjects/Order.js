@@ -80,13 +80,28 @@ function closeOrder(client, id) {
     return promise;
 }
 
-
+function isOpen(client, id) {
+    const ordId = mkOrdId(id);
+    var promise = new Promise(function(resolve, reject) {
+        client.getAsync(ordId)
+        .then(function(isOpen) {
+            if (!isOpen) {
+                reject("NULL");
+                return;
+            }
+            client.setAsync(ordId, 0)
+            .then(() => resolve(parseInt(isOpen) === 1));
+        });
+    });
+    return promise;
+}
 
 module.exports = function(client) {
     return {
         createOrder: createOrder.bind({}, client),
         closeOrder: closeOrder.bind({}, client),
         getOrder: getOrder.bind({}, client),
+        isOpen: isOpen.bind({}, client),
         addItemToOrder: addItemToOrder.bind({}, client),
         removeItemFromOrder: removeItemFromOrder.bind({}, client)
     }

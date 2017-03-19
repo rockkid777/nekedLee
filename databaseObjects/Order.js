@@ -1,0 +1,93 @@
+const Promise = require('bluebird');
+const EXPIRE = 43200 // 12 hours
+
+function mkOrdId(id) {return ('order:' + id);}
+function mkObjId(id) {return ('order:' + id + 'data');}
+
+function getOrder(client, id) {
+    const ordId = mkOrdId(id);
+    const objId = mkObjId(id);
+    return client.getAsync(ordId)
+    .then(() => client.hgetallAsync(objId));
+}
+
+function createOrder(client, id) {
+    const ordId = mkOrdId(id);
+    var promise = new Promise(function(resolve, reject) {
+        client.getAsync(ordId)
+        .then(function(isOpen) {
+            if (isOpen) {
+                reject("ALREADY_SET");
+                return;
+            }
+            client.setAsync(ordId, 1)
+            .then(() => client.expireAsync(ordId, EXPIRE))
+            .then(() => resolve({}));
+        });
+    });
+    return promise;
+}
+
+function addItemToOrder(client, id, user, item) {
+    const ordId = mkOrdId(id);
+    const objId = mkObjId(id);
+    var promise = new Promise(function(resolve, reject) {
+        client.getAsync(ordId)
+        .then(function(isOpen) {
+            if (!isOpen || isOpen != 1) {
+                reject("CLOSED_OR_NULL");
+                return;
+            }
+            client.hsetAsync(objId, user, item)
+            .then(() => client.expireAsync(ordId, EXPIRE))
+            .then(() => client.expireAsync(objId, EXPIRE))
+            .then(() => resolve());
+        });
+    });
+    return promise;
+}
+
+function removeItemFromOrder(client, id, user, item) {
+    const ordId = mkOrdId(id);
+    const objId = mkObjId(id);
+    var promise = new Promise(function(resolve, reject) {
+        client.getAsync(ordId)
+        .then(function(isOpen) {
+            if (!isOpen || isOpen != 1) {
+                reject("CLOSED_OR_NULL");
+                return;
+            }
+            client.hdelAsync(objId, user)
+            .then(() => resolve());
+        });
+    });
+    return promise;
+}
+
+function closeOrder(client, id) {
+    const ordId = mkOrdId(id);
+    var promise = new Promise(function(resolve, reject) {
+        client.getAsync(ordId)
+        .then(function(isOpen) {
+            if (!isOpen || isOpen != 1) {
+                reject("CLOSED_OR_NULL");
+                return;
+            }
+            client.setAsync(ordId, 0)
+            .then(() => resolve());
+        });
+    });
+    return promise;
+}
+
+
+
+module.exports = function(client) {
+    return {
+        createOrder: createOrder.bind({}, client),
+        closeOrder: closeOrder.bind({}, client),
+        getOrder: getOrder.bind({}, client),
+        addItemToOrder: addItemToOrder.bind({}, client),
+        removeItemFromOrder: removeItemFromOrder.bind({}, client)
+    }
+};

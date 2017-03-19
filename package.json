@@ -16,7 +16,10 @@
     "slack",
     "food",
     "webhook",
-    "fun"
+    "fun",
+    "slashcommand",
+    "slash",
+    "command"
   ],
   "author": "Ádám, Révész",
   "license": "MIT",

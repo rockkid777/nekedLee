@@ -27,8 +27,8 @@ function internalError(payload, msg) {
     msg.icon_emoji = ':frowning:';
     msg.text = 'Pssssst... ' + payload.user_name +
         '... There was a little accident... Dunno what happened exactly, \
-        but I can\'t do what you have requested right now... :confused: I\'m pretty \
-        sure those evil developers are in charge for this... :unamused:';
+but I can\'t do what you have requested right now... :confused: I\'m pretty \
+sure those evil developers are in charge for this... :unamused:';
     return msg;
 }
 
@@ -59,10 +59,10 @@ function list(dbo, payload, msg) {
         const suffix = ':' + payload.channel_id;
         dbo.listOrdersWithSuffix(suffix)
         .then(list => {
-            msg.text = list.reduce(elem => {
+            msg.text = list.reduce((prev, elem) => {
                 const ord = elem.orderId.split(':')[1];
                 const openStr = (elem.isOpen) ? 'open' : 'closed';
-                return (ord + ': ' + openStr);
+                return (prev + '\n' + ord + ': ' + openStr);
             }, 'Orders:');
             resolve(msg);
         })

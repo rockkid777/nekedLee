@@ -5,7 +5,7 @@ function routeMessage(dbo, payload) {
     var promise = new Promise(function(resolve, reject) {
         const words = payload.text.replace(/[\s\t]+/g,' ').split(' ');
         const msgActions = new MessageActions(dbo, payload, words);
-        if (words.length < 2) {
+        if (words.length < 1) {
             resolve(msgActions.invalidCmd());
             return;
         }

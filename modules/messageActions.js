@@ -53,6 +53,22 @@ function getOrder(dbo, payload, words, msg) {
     return promise;
 }
 
+function list(dbo, payload, msg) {
+    var promise = new Promise(function(resolve, reject) {
+        const suffix = ':' + payload.channel_id;
+        dbo.listOrdersWithSuffix(suffix)
+        .then(list => {
+            msg.text = list.reduce(elem => {
+                const ord = elem.orderId.split(':')[1];
+                const openStr = (elem.isOpen) ? 'open' : 'closed';
+                return (ord + ': ' + openStr);
+            }, 'Orders:');
+        })
+        .catch(() => resolve(internalError(payload, msg)));
+    });
+    return promise;
+}
+
 function startOrder(dbo, payload, words, msg) {
     var promise = new Promise(function(resolve, reject) {
         if (words.length < 2) {
@@ -156,6 +172,7 @@ module.exports = function(dbo, payload, words) {
     var msgSkeleton = new MessageSkeleton();
     return {
         getOrder: getOrder.bind({}, dbo, payload, words, msgSkeleton),
+        list: list.bind({}, dbo, payload, msgSkeleton),
         startOrder: startOrder.bind({}, dbo, payload, words, msgSkeleton),
         stopOrder: stopOrder.bind({}, dbo, payload, words, msgSkeleton),
         addItem: addItem.bind({}, dbo, payload, words, msgSkeleton),

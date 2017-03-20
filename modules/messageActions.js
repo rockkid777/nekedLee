@@ -12,13 +12,14 @@ function invalidCmd(msg) {
 }
 
 function help(msg) {
-    msg.text = 'Start new order: `/food4me (start|create) {orderid}`\n \
-Get info about existing order: `/food4me get {orderid}`\n \
-Close ongoing order: `/food4me (stop|kill|close) {orderid}`\n \
-Join order: `/food4me (join|set) {orderid} {your text}`\n \
-Update your order item: `/food4me (update|set) {orderid} {your text}`\n \
-Remove your order item: `/food4me (rm|cancel) {orderid}`\n \
-Print this help: `/food4me (h|help|halp|man) {orderid}`';
+    msg.text = 'Start new order: `/food4me (start|create) {orderName}`\n \
+Get info about existing order: `/food4me get {orderName}`\n \
+List existing orders: `/food4me get {orderName}`\n \
+Close ongoing order: `/food4me (stop|kill|close) {orderName}`\n \
+Join order: `/food4me (join|set) {orderName} {your text}`\n \
+Update your order item: `/food4me (update|set) {orderName} {your text}`\n \
+Remove your order item: `/food4me (rm|cancel) {orderName}`\n \
+Print this help: `/food4me (h|help|halp|man) {orderName}`';
     return msg;
 }
 
@@ -125,7 +126,7 @@ function addItem(dbo, payload, words, msg) {
             return;
         }
         const orderId = mkOrderId(words[1], payload.channel_id)
-        dbo.addItemToOrder(orderId, payload.user_name, words.slice(3).join(' '))
+        dbo.addItemToOrder(orderId, payload.user_name, words.slice(2).join(' '))
         .then(() => {
             msg.text = 'Your order has been recorded. :wink:';
             resolve(msg);

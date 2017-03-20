@@ -22,7 +22,7 @@ function internalError(payload, msg) {
 function getOrder(dbo, payload, words, msg) {
     var promise = new Promise(function(resolve, reject) {
         if (words.length < 3) {
-            reject(invalidCmd(msg));
+            resolve(invalidCmd(msg));
             return;
         }
         const orderId = mkOrderId(words[2], payload.channel_id);
@@ -44,7 +44,7 @@ function getOrder(dbo, payload, words, msg) {
 function startOrder(dbo, payload, words, msg) {
     var promise = new Promise(function(resolve, reject) {
         if (words.length < 3) {
-            reject(invalidCmd(msg));
+            resolve(invalidCmd(msg));
             return;
         }
         const orderId = mkOrderId(words[2], payload.channel_id);

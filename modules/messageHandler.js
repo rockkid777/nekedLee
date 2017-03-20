@@ -6,7 +6,7 @@ function routeMessage(dbo, payload) {
         const words = payload.command.replace(/[\s\t]+/g,' ').split(' ');
         const msgActions = new MessageActions(dbo, payload, words);
         if (words.length < 3) {
-            resolve(msgActions.invalidCmd);
+            resolve(msgActions.invalidCmd());
             return;
         }
         switch (words[1].toLowerCase()) {
@@ -42,7 +42,7 @@ function routeMessage(dbo, payload) {
                 .catch(resolve);
                 break;
             default:
-                resolve(msgActions.invalidCmd);
+                resolve(msgActions.invalidCmd());
         }
     });
     return promise;

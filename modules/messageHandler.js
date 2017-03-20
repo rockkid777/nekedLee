@@ -3,9 +3,9 @@ const MessageActions = require('./messageActions');
 
 function routeMessage(dbo, payload) {
     var promise = new Promise(function(resolve, reject) {
-        const words = payload.command.replace(/[\s\t]+/g,' ').split(' ');
+        const words = payload.text.replace(/[\s\t]+/g,' ').split(' ');
         const msgActions = new MessageActions(dbo, payload, words);
-        if (words.length < 3) {
+        if (words.length < 2) {
             resolve(msgActions.invalidCmd());
             return;
         }

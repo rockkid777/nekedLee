@@ -21,7 +21,7 @@ function internalError(payload, msg) {
 
 function getOrder(dbo, payload, words, msg) {
     var promise = new Promise(function(resolve, reject) {
-        if (words.length < 3) {
+        if (words.length < 2) {
             resolve(invalidCmd(msg));
             return;
         }
@@ -43,7 +43,7 @@ function getOrder(dbo, payload, words, msg) {
 
 function startOrder(dbo, payload, words, msg) {
     var promise = new Promise(function(resolve, reject) {
-        if (words.length < 3) {
+        if (words.length < 2) {
             resolve(invalidCmd(msg));
             return;
         }
@@ -67,7 +67,7 @@ function startOrder(dbo, payload, words, msg) {
 
 function stopOrder(dbo, payload, words, msg) {
     var promise = new Promise(function(resolve, reject) {
-        if (words.length < 3) {
+        if (words.length < 2) {
             reject(invalidCmd(msg));
             return;
         }
@@ -92,7 +92,7 @@ function stopOrder(dbo, payload, words, msg) {
 
 function addItem(dbo, payload, words, msg) {
     var promise = new Promise(function(resolve, reject) {
-        if (words.length < 4) {
+        if (words.length < 3) {
             resolve(invalidCmd(msg));
             return;
         }
@@ -116,7 +116,7 @@ function addItem(dbo, payload, words, msg) {
 
 function removeItem(dbo, payload, words, msg) {
     var promise = new Promise(function(resolve, reject) {
-        if (words.length < 3) {
+        if (words.length < 2) {
             reject(invalidCmd(msg));
             return;
         }

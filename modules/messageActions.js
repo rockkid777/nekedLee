@@ -64,6 +64,7 @@ function list(dbo, payload, msg) {
                 const openStr = (elem.isOpen) ? 'open' : 'closed';
                 return (ord + ': ' + openStr);
             }, 'Orders:');
+            resolve(msg);
         })
         .catch(() => resolve(internalError(payload, msg)));
     });

@@ -15,7 +15,7 @@ function routeMessage(dbo, payload) {
                 .then(resolve)
                 .catch(resolve);
                 break;
-            case: 'list':
+            case 'list':
                 msgActions.list()
                 .then(resolve)
                 .catch(resolve);

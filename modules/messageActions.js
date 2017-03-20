@@ -6,7 +6,19 @@ function mkOrderId(id, chId) {
 }
 
 function invalidCmd(msg) {
-    msg.text = ':warning: Invalid command. :warning:';
+    msg.text = ':warning: Invalid command. :warning:\n \
+    Take a look at our help. :arrow_right:  `/food4me help`';
+    return msg;
+}
+
+function help(msg) {
+    msg.text = 'Start new order: `/food4me (start|create) {orderid}`\n \
+    Get info about existing order: `/food4me get {orderid}`\n \
+    Close ongoing order: `/food4me (stop|kill|close) {orderid}`\n \
+    Join order: `/food4me (join|set) {orderid} {your text}`\n \
+    Update your order item: `/food4me (update|set) {orderid} {your text}`\n \
+    Remove your order item: `/food4me (rm|cancel) {orderid}`\n \
+    Print this help: `/food4me (h|help|halp|man) {orderid}`';
     return msg;
 }
 
@@ -148,6 +160,7 @@ module.exports = function(dbo, payload, words) {
         stopOrder: stopOrder.bind({}, dbo, payload, words, msgSkeleton),
         addItem: addItem.bind({}, dbo, payload, words, msgSkeleton),
         removeItem: removeItem.bind({}, dbo, payload, words, msgSkeleton),
-        invalidCmd: invalidCmd.bind({}, msgSkeleton)
+        invalidCmd: invalidCmd.bind({}, msgSkeleton),
+        help: help.bind({}, msgSkeleton)
     }
 };

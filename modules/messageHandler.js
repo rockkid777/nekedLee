@@ -41,6 +41,11 @@ function routeMessage(dbo, payload) {
                 .then(resolve)
                 .catch(resolve);
                 break;
+            case 'h':
+            case 'help':
+            case 'halp':
+            case 'man':
+                resolve(msgActions.help());
             default:
                 resolve(msgActions.invalidCmd());
         }

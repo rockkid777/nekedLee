@@ -9,7 +9,7 @@ function routeMessage(dbo, payload) {
             resolve(msgActions.invalidCmd());
             return;
         }
-        switch (words[1].toLowerCase()) {
+        switch (words[0].toLowerCase()) {
             case 'get':
                 msgActions.getOrder()
                 .then(resolve)

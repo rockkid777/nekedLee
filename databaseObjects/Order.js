@@ -47,6 +47,34 @@ function addItemToOrder(client, id, user, item) {
     return promise;
 }
 
+function listOrdersWithSuffix(client, suffix) {
+    const pattern = 'order:*' + suffix;
+    var promise = new Promise(function(resolve, reject) {
+        client.keysAsync(pattern)
+        .then(list => {
+            return {
+                orders: list,
+                vals: list.map(ord => client.getAsync(ord))
+            };
+        })
+        .then(obj => {
+            Promise.all(obj.vals)
+            .then(valList => {
+                var toZip = {
+                    orders: obj.orders,
+                    vals: valList.map(x => parseInt(x) === 1)
+                };
+                var res = toZip.orders.map((elem, ind) => {
+                    return {orderId: elem, isOpen: toZip.vals[ind]};
+                })
+                resolve(res);
+            });
+        })
+        .catch(reject);
+    });
+    return promise;
+}
+
 function removeItemFromOrder(client, id, user, item) {
     const ordId = mkOrdId(id);
     const objId = mkObjId(id);
@@ -110,6 +138,7 @@ module.exports = function(client) {
         getOrder: getOrder.bind({}, client),
         isOpen: isOpen.bind({}, client),
         addItemToOrder: addItemToOrder.bind({}, client),
-        removeItemFromOrder: removeItemFromOrder.bind({}, client)
+        removeItemFromOrder: removeItemFromOrder.bind({}, client),
+        listOrdersWithSuffix: listOrdersWithSuffix.bind({}, client)
     }
 };

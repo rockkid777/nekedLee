@@ -30,10 +30,10 @@ function getOrder(dbo, payload, words, msg) {
         .then(obj => {
             if (obj) {
                 msg.text = Object.keys(obj).reduce((prev, curr) => {
-                    return prev + '\n**' + curr + '**:\n' + obj[curr];
-                }, 'Items in **' + words[2] + '**:')
+                    return prev + '\n*' + curr + '*:\n' + obj[curr];
+                }, 'Items in *' + words[2] + '*:')
             } else {
-                msg.text = ('Order **'+ words[2] +'** is empty os does not exists.');
+                msg.text = ('Order *'+ words[2] +'* is empty os does not exists.');
             }
             resolve(msg);
         }).catch(() => resolve(internalError(payload, msg)));
@@ -51,11 +51,11 @@ function startOrder(dbo, payload, words, msg) {
         dbo.createOrder(orderId)
         .then(() => {
             msg.response_type = 'in_channel';
-            msg.text = 'Order session **' + words[2] + '** has been started.';
+            msg.text = 'Order session *' + words[2] + '* has been started.';
             resolve(msg);
         }).catch(err => {
             if (err === 'ALREADY_SET') {
-                msg.text = 'Order **' + words[2] + '** has been already started.';
+                msg.text = 'Order *' + words[2] + '* has been already started.';
                 resolve(msg);
             } else {
                 resolve(internalError(payload, msg));
@@ -75,12 +75,12 @@ function stopOrder(dbo, payload, words, msg) {
         dbo.closeOrder(orderId)
         .then(() => {
             msg.response_type = 'in_channel';
-            msg.text = 'Order **' + words[2] + '** has been closed.';
+            msg.text = 'Order *' + words[2] + '* has been closed.';
             resolve(msg);
         })
         .catch(err => {
             if (err === 'CLOSED_OR_NULL') {
-                msg.text = 'Order **' + words[2] + '** has been already closed or not exists.';
+                msg.text = 'Order *' + words[2] + '* has been already closed or not exists.';
                 resolve(msg);
             } else {
                 resolve(internalError(payload, msg));
@@ -104,7 +104,7 @@ function addItem(dbo, payload, words, msg) {
         })
         .catch(err => {
             if (err === 'CLOSED_OR_NULL') {
-                msg.text = 'Order **' + words[2] + '** has been already closed or not exists.';
+                msg.text = 'Order *' + words[2] + '* has been already closed or not exists.';
                 resolve(msg);
             } else {
                 resolve(internalError(payload, msg));
@@ -123,14 +123,14 @@ function removeItem(dbo, payload, words, msg) {
         const orderId = mkOrderId(words[2], payload.channel_id)
         dbo.removeItemFromOrder(orderId, payload.user_name)
         .then(() => {
-            msg.text = 'Your item has been removed from order **' + words[2] + '**.';
+            msg.text = 'Your item has been removed from order *' + words[2] + '*.';
             resolve(msg);
         }).catch(err => {
             if (err === 'CLOSED_OR_NULL') {
-                msg.text = 'Order **' + words[2] + '** has been already closed or not exists.';
+                msg.text = 'Order *' + words[2] + '* has been already closed or not exists.';
                 resolve(msg);
             } else if (err === 'INVALID_ITEM') {
-                msg.text = 'You haven\'t got any items in order **' + words[2] + '**.';
+                msg.text = 'You haven\'t got any items in order *' + words[2] + '*.';
                 resolve(msg);
             } else {
                 resolve(internalError(payload, msg));

@@ -3,7 +3,10 @@ const http = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const config  = require('./etc/config.js')
+
+const config = {
+    slashToken: process.env.SLASH_TOKEN,
+};
 
 var redis = require('redis');
 Promise.promisifyAll(redis.RedisClient.prototype);

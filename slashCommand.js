@@ -7,7 +7,7 @@ const config  = require('./etc/config.js')
 
 var redis = require('redis');
 Promise.promisifyAll(redis.RedisClient.prototype);
-const client = redis.createClient();
+const client = redis.createClient(process.env.REDIS_URL);
 
 var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');

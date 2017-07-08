@@ -4,8 +4,8 @@
   "description": "Nokedli slack webhook app.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "slash": "node slashCommand.js",
+    "grabber": "node index.js",
+    "start": "node slashCommand.js",
     "test": "./node_modules/mocha/bin/mocha"
   },
   "repository": {

@@ -1,3 +1,5 @@
 module.exports = {
-    webhookUri: 'your webhook uri'
+    webhookUri: 'your webhook uri',
+    slashToken: 'your token',
+    apiTokens: ['your tokens']
 };

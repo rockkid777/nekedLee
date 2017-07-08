@@ -25,4 +25,4 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 require('./controllers/slash.js')(app, config, client);
 var server = http.createServer(app);
-server.listen(8080);
+server.listen(process.env.PORT || 8080);

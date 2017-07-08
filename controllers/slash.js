@@ -1,11 +1,6 @@
 const MessageHandler = require('../modules/messageHandler');
 const Order = require('../databaseObjects/Order');
 
-function isValidAccessToken(req, tokens) {
-    return (req.headers.apiToken &&
-        tokens.filter(x => x == req.headers.apiToken).length > 0);
-}
-
 module.exports = function (app, config, client) {
     var dbo = new Order(client);
     var msgHandler = new MessageHandler(dbo);
@@ -23,10 +18,6 @@ module.exports = function (app, config, client) {
     });
 
     app.get('/order/v1/order', function(req, res) {
-        if (!isValidAccessToken(req, config.apiTokens)) {
-            res.status(403).send();
-            return;
-        }
         if (!req.body.channel_id) {
             res.status(400).send();
             return;
